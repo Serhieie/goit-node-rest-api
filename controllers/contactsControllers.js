@@ -37,7 +37,6 @@ const remove = async (req, res) => {
   if (!result) {
     throw HttpError(404);
   }
-  // res.status(204).send()
   res.json({
     message: "delete succes",
   });
