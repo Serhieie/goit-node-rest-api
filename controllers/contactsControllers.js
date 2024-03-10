@@ -5,7 +5,7 @@ const {
   updateContact,
   getAllContacts,
   getContactById,
-} = require("../models/contactsOperation");
+} = require("../services/contactsServices");
 
 const getAll = async (req, res) => {
   const result = await getAllContacts();
