@@ -1,16 +1,18 @@
 const { HttpError, ctrlWrapper } = require("../helpers");
 const {
-  addContact,
-  deleteContact,
-  updateContact,
   getAllContacts,
   getContactById,
+  updateContact,
+  updateContactFavorite,
+  deleteContact,
+  createContact,
 } = require("../services/contactsServices");
-
-// changed branch name for hw02-express
 
 const getAll = async (req, res) => {
   const result = await getAllContacts();
+  if (!result) {
+    throw HttpError(404);
+  }
   res.json(result);
 };
 
@@ -32,20 +34,28 @@ const update = async (req, res) => {
   res.json(result);
 };
 
+const updateFavorite = async (req, res) => {
+  const { id } = req.params;
+  const result = await updateContactFavorite(id, req.body);
+  if (!result) {
+    throw HttpError(404);
+  }
+  res.json(result);
+};
+
 const remove = async (req, res) => {
   const { id } = req.params;
-
   const result = await deleteContact(id);
   if (!result) {
     throw HttpError(404);
   }
   res.json({
-    message: "delete succes",
+    message: "delete success",
   });
 };
 
 const post = async (req, res) => {
-  const result = await addContact(req.body);
+  const result = await createContact(req.body);
   res.status(201).json(result);
 };
 
@@ -54,5 +64,6 @@ module.exports = {
   getById: ctrlWrapper(getById),
   update: ctrlWrapper(update),
   remove: ctrlWrapper(remove),
+  updateFavorite: ctrlWrapper(updateFavorite),
   post: ctrlWrapper(post),
 };
