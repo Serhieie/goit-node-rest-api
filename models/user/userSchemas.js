@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-const subscriptionList = ["starter", "pro", "business"];
+const subscriptionList = ["starter", "pro", "businesss"];
 const userRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 const registrationSchema = Joi.object({
