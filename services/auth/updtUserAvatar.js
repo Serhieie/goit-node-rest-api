@@ -13,9 +13,7 @@ const updtUserAvatar = async (req) => {
   const avatarURL = path.join("avatars", filename);
   await User.findByIdAndUpdate(_id, { avatarURL });
   return {
-    user: {
-      avatarURL,
-    },
+    avatarURL,
     message: "Success: Avatar changed successfully.",
   };
 };
