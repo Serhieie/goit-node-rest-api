@@ -1,10 +1,12 @@
 const { ctrlWrapper } = require("../../helpers");
 const { registerUser } = require("../../services/auth");
 
+const { nanoid } = require("nanoid");
+
 const register = async (req, res) => {
-  const { email, password } = req.body;
-  const user = await registerUser(email, password, req.body);
-  res.status(201).json({ user });
+  const verificationCode = nanoid();
+  const user = await registerUser(req.body, verificationCode);
+  res.status(201).json(user);
 };
 
 module.exports = {

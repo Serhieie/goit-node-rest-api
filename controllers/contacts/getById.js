@@ -1,9 +1,9 @@
 const { HttpError, ctrlWrapper } = require("../../helpers");
-const { getAllContacts } = require("../../services/contacts");
+const { getContactById } = require("../../services/contacts");
 
 const getById = async (req, res) => {
   const { id } = req.params;
-  const result = await getAllContacts(id);
+  const result = await getContactById(id);
   if (!result) {
     throw HttpError(404);
   }

@@ -13,9 +13,14 @@ const loginSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
+const verifySchema = Joi.object({
+  email: Joi.string().pattern(userRegex).required(),
+});
+
 const userSchemas = {
   loginSchema,
   registrationSchema,
+  verifySchema,
 };
 
 module.exports = { userSchemas };
