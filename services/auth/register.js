@@ -1,18 +1,27 @@
 const bcrypt = require("bcrypt");
-const { HttpError } = require("../../helpers");
+const { HttpError, sendEmailGrit } = require("../../helpers");
 const { User } = require("../../models/user");
+const { createVerifyEmailMarkup } = require("../../view");
 const gravatar = require("gravatar");
 
-const registerUser = async (email, password, body) => {
-  const user = await User.findOne({ email });
+const { BASE_URL } = process.env;
 
-  if (user) throw HttpError(409);
-  const avatarURL = gravatar.url(email);
-  const hashedPassword = await bcrypt.hash(password, 10);
+const registerUser = async (body, verificationCode) => {
+  const user = await User.findOne({ email: body.email });
+  if (user) throw HttpError(409, "This email already in use");
+  const verEmail = {
+    to: body.email,
+    subject: "Verify email",
+    html: createVerifyEmailMarkup(BASE_URL, verificationCode),
+  };
+  await sendEmailGrit(verEmail);
+  const avatarURL = gravatar.url(body.email);
+  const hashedPassword = await bcrypt.hash(body.password, 10);
   const newUser = await User.create({
     ...body,
     password: hashedPassword,
     avatarURL,
+    verificationCode,
   });
 
   return {
